@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "./App.css";
+import AddCar from "./pages/AddCar";
 import AppCars from "./pages/AppCars";
 
 function App() {
@@ -12,12 +13,18 @@ function App() {
               <li>
                 <Link to='/cars'>Cars</Link>
               </li>
+              <li>
+                <Link to='/add'>Add Car</Link>
+              </li>
             </ul>
           </nav>
           <hr />
           <Switch>
             <Route path='/cars'>
               <AppCars />
+            </Route>
+            <Route path='/add'>
+              <AddCar />
             </Route>
           </Switch>
         </div>

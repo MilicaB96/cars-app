@@ -4,7 +4,6 @@ function AppCars() {
   const [cars, setCars] = useState([]);
   async function getCars() {
     const data = await CarService.getAll();
-    console.log(data);
     setCars(data);
   }
   useEffect(() => {
@@ -14,9 +13,11 @@ function AppCars() {
     <div>
       <h1>Cars:</h1>
       <ul>
-        {cars.map((car) => {
-          <li>{car}</li>;
-        })}
+        {cars.map((car) => (
+          <li key={car.id}>
+            {car.brand} ({car.model})
+          </li>
+        ))}
       </ul>
     </div>
   );

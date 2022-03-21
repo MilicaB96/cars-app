@@ -19,6 +19,15 @@ class CarService {
 
     return [];
   }
+  async create(car) {
+    try {
+      const { data } = await this.client.post("api/cars", car);
+      console.log(data);
+    } catch (error) {
+      console.log("Greska", error);
+    }
+    return [];
+  }
 }
 
 export default new CarService();
