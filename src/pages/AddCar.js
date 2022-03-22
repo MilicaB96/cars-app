@@ -1,8 +1,25 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import CarService from "../services/CarService";
 function AddCar() {
-  //
+  //get car
+  let { id } = useParams();
+  async function getCar() {
+    if (!id) {
+      return;
+    }
+    const car = await CarService.get(id);
+    setBrand(car.brand);
+    setModel(car.model);
+    setYear(car.year);
+    setMaxSpeed(car.maxSpeed);
+    setNumberOfDoors(car.numberOfDoors);
+    setIsAutomatic(car.isAutomatic);
+    setEngine(car.engine);
+  }
+  useEffect(() => {
+    getCar();
+  }, []);
   const history = useHistory();
   // fields
   const [brand, setBrand] = useState("");
@@ -12,28 +29,36 @@ function AddCar() {
   const [numberOfDoors, setNumberOfDoors] = useState(0);
   const [isAutomatic, setIsAutomatic] = useState(false);
   const [engine, setEngine] = useState(null);
-  // create a car
-
-  function createCar() {
-    CarService.create({
-      brand,
-      model,
-      year,
-      maxSpeed,
-      numberOfDoors,
-      isAutomatic,
-      engine,
-    });
-  }
   // handle submit
-  const handleSubmit = (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
-    createCar();
+    if (!id) {
+      const newCar = await CarService.create({
+        brand,
+        model,
+        year,
+        maxSpeed,
+        numberOfDoors,
+        isAutomatic,
+        engine,
+      });
+    } else {
+      const newCar = await CarService.edit(id, {
+        brand,
+        model,
+        year,
+        maxSpeed,
+        numberOfDoors,
+        isAutomatic,
+        engine,
+      });
+    }
     history.push("/cars");
-  };
+  }
   const years = () => {
+    let currentYear = new Date().getFullYear();
     let arr = [];
-    for (let i = 1990; i <= 2018; i++) arr.push(i);
+    for (let i = 1990; i <= currentYear; i++) arr.push(i);
     return arr;
   };
   const engines = ["diesel", "petrol", "electric", "hybrid"];
@@ -45,6 +70,7 @@ function AddCar() {
     setMaxSpeed("");
     setNumberOfDoors("");
     setIsAutomatic(false);
+    setEngine("");
   };
   // handle preview
   const handlePreview = () => {
@@ -139,12 +165,19 @@ function AddCar() {
         </label>
         <br />
         <label>
-          <div onChange={(e) => setEngine(e.target.value)}>
+          <div>
             Choose an engine:{" "}
-            {engines.map((engine) => (
-              <span key={engine}>
-                {engine}{" "}
-                <input required type='radio' name='engine' value={engine} />{" "}
+            {engines.map((item) => (
+              <span key={item}>
+                {item}{" "}
+                <input
+                  required
+                  type='radio'
+                  onChange={(e) => setEngine(e.target.value)}
+                  name='engine'
+                  checked={item == engine}
+                  value={item}
+                />{" "}
               </span>
             ))}
           </div>

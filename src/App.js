@@ -26,6 +26,9 @@ function App() {
             <Route path='/add'>
               <AddCar />
             </Route>
+            <Route exact path='/edit/:id'>
+              <AddCar />
+            </Route>
           </Switch>
         </div>
       </Router>

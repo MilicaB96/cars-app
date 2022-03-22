@@ -1,5 +1,4 @@
 import axios from "axios";
-
 class CarService {
   constructor() {
     const instance = axios.create({
@@ -22,11 +21,34 @@ class CarService {
   async create(car) {
     try {
       const { data } = await this.client.post("api/cars", car);
-      console.log(data);
     } catch (error) {
       console.log("Greska", error);
     }
     return [];
+  }
+  async get(id) {
+    try {
+      const { data } = await this.client.get(`api/cars/${id}`);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+    return [];
+  }
+  async edit(id, car) {
+    try {
+      const { data } = await this.client.put(`api/cars/${id}`, car);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async delete(id) {
+    try {
+      const { data } = await this.client.delete(`api/cars/${id}`);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 
