@@ -67,6 +67,7 @@ function AddCar() {
             type='text'
             name='brand'
             required
+            minLength='2'
             value={brand}
             placeholder='Brand'
             onChange={(e) => setBrand(e.target.value)}
@@ -79,6 +80,7 @@ function AddCar() {
             name='model'
             required
             value={model}
+            minLength='2'
             placeholder='Model'
             onChange={(e) => setModel(e.target.value)}
           />
@@ -89,6 +91,7 @@ function AddCar() {
           <select
             name='year'
             value={year}
+            required
             onChange={(e) => setYear(e.target.value)}
           >
             {years().map((year) => (
@@ -104,6 +107,7 @@ function AddCar() {
           <input
             type='number'
             name='maxSpeed'
+            min='0'
             value={maxSpeed}
             placeholder='Maximum speed'
             onChange={(e) => setMaxSpeed(e.target.value)}
@@ -115,7 +119,9 @@ function AddCar() {
           <input
             type='number'
             name='numberOfDoors'
+            min='0'
             value={numberOfDoors}
+            required
             placeholder='Number of Doors'
             onChange={(e) => setNumberOfDoors(e.target.value)}
           />
