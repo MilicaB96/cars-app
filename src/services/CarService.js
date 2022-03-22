@@ -45,7 +45,7 @@ class CarService {
   async delete(id) {
     try {
       const { data } = await this.client.delete(`api/cars/${id}`);
-      console.log(data);
+      return data;
     } catch (error) {
       console.log(error);
     }

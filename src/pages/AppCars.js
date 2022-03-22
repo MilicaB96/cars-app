@@ -15,13 +15,14 @@ function AppCars() {
   // handle Delete
   async function handleDelete(id) {
     let message = prompt("Are you sure you want to delete this(Y/N)", "Y");
-    if (message == "N") {
+    if (message !== "Y") {
       return;
     }
-    if (message == "Y") {
-      const deleteCar = await CarService.delete(id);
+    const data = await CarService.delete(id);
+    const index = cars.findIndex((car) => car.id == id);
+    if (data.count > 0) {
+      setCars([...cars.slice(0, index), ...cars.slice(index + 1)]);
     }
-    getCars();
   }
   return (
     <div>
@@ -30,9 +31,19 @@ function AppCars() {
         {cars.map((car) => (
           <div key={car.id}>
             <li className='d-inline-block' key={car.id}>
-              {car.brand} ({car.model},{car.year}) {car.maxSpeed}{" "}
-              {car.numberOfDoors} {car.engine}{" "}
-              {car.isAutomatic ? "Automatic" : "Not Automatic"}
+              <div>
+                <span>
+                  {car.brand} ({car.model},{car.year}){" "}
+                </span>
+                <span>
+                  {car.maxSpeed ? `Maximum speed is ${car.maxSpeed}` : ``}{" "}
+                </span>
+                <span>Number of doors:{car.numberOfDoors} </span>
+                <span>The engine is: {car.engine} </span>
+                <span>
+                  Car is {car.isAutomatic ? "Automatic" : "not Automatic"}
+                </span>
+              </div>
             </li>
             <button
               type='button'
