@@ -11,9 +11,16 @@ function AppCars() {
     getCars();
   }, []);
   let history = useHistory();
+  // prompt
   // handle Delete
   async function handleDelete(id) {
-    const deleteCar = await CarService.delete(id);
+    let message = prompt("Are you sure you want to delete this(Y/N)", "Y");
+    if (message == "N") {
+      return;
+    }
+    if (message == "Y") {
+      const deleteCar = await CarService.delete(id);
+    }
     getCars();
   }
   return (
