@@ -37,6 +37,28 @@ function AddCar() {
     return arr;
   };
   const engines = ["diesel", "petrol", "electric", "hybrid"];
+  // handle reset
+  const handleReset = () => {
+    setBrand("");
+    setModel("");
+    setYear(1990);
+    setMaxSpeed("");
+    setNumberOfDoors("");
+    setIsAutomatic(false);
+  };
+  // handle preview
+  const handlePreview = () => {
+    const automaticCheck = isAutomatic
+      ? "Car is automatic"
+      : "Car is not automatic";
+    alert(`brand:${brand}
+           model:${model}
+           year:${year}
+           Maximum Speed:${maxSpeed}
+           Number of Doors: ${numberOfDoors}
+           ${automaticCheck}
+           Engine: ${engine}`);
+  };
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -105,6 +127,7 @@ function AddCar() {
             type='checkbox'
             name='isAutomatic'
             value={isAutomatic}
+            checked={isAutomatic}
             onChange={() => setIsAutomatic(!isAutomatic)}
           />
         </label>
@@ -124,6 +147,18 @@ function AddCar() {
         <button className='btn' type='submit'>
           Submit
         </button>
+        <div>
+          <button type='button' className='btn btn-light' onClick={handleReset}>
+            Reset
+          </button>
+          <button
+            type='button'
+            className='btn btn-light'
+            onClick={handlePreview}
+          >
+            Preview
+          </button>
+        </div>
       </form>
     </div>
   );
