@@ -2,14 +2,23 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "./App.css";
 import AddCar from "./pages/AddCar";
 import AppCars from "./pages/AppCars";
-import Login from "./pages/Login";
+import AppLogin from "./pages/AppLogin";
 import { useState } from "react";
-
+import AuthService from "./services/AuthService";
+import AppRegister from "./pages/AppRegister";
+import SingleCar from "./components/SingleCar";
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(
     Boolean(localStorage.getItem("token"))
   );
-  const handleLogout = () => {};
+  const handleLogout = async () => {
+    try {
+      await AuthService.logout();
+      setIsAuthenticated(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className='App'>
       <Router>
@@ -17,29 +26,36 @@ function App() {
           <nav>
             <ul>
               <li>
-                <Link style={{ textDecoration: "none" }} to='/cars'>
-                  Cars
-                </Link>
+                <Link to='/cars'>Cars</Link>
               </li>
               <li>
-                <Link style={{ textDecoration: "none" }} to='/add'>
-                  Add Car
-                </Link>
+                <Link to='/add'>Add Car</Link>
               </li>
               <li>
                 {!isAuthenticated ? (
                   <Link to='/login'>Login</Link>
                 ) : (
-                  <span onClick={handleLogout} style={{ color: "blue" }}>
+                  <button
+                    type='button'
+                    className='btn'
+                    onClick={handleLogout}
+                    style={{ color: "blue" }}
+                  >
                     {"Logout"}
-                  </span>
+                  </button>
                 )}
               </li>
+              {!isAuthenticated && (
+                <li>{<Link to='/register'>Register</Link>}</li>
+              )}
             </ul>
           </nav>
           <hr />
           <Switch>
-            <Route path='/cars'>
+            <Route exact path='/cars/:id'>
+              <SingleCar />
+            </Route>
+            <Route exact path='/cars'>
               <AppCars />
             </Route>
             <Route path='/add'>
@@ -49,11 +65,14 @@ function App() {
               <AddCar />
             </Route>
             <Route exact path='/login'>
-              <Login
+              <AppLogin
                 onLogin={() => {
                   setIsAuthenticated(true);
                 }}
               />
+            </Route>
+            <Route exact path='/register'>
+              <AppRegister />
             </Route>
           </Switch>
         </div>

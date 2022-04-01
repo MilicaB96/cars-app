@@ -7,5 +7,12 @@ export default class HttpService {
     });
 
     this.client = instance;
+    this.client.interceptors.request.use((request) => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        request.headers.Authorization = `Bearer ${token}`;
+      }
+      return request;
+    });
   }
 }

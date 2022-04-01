@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CarService from "../services/CarService";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 function AppCars() {
   const [cars, setCars] = useState([]);
   async function getCars() {
@@ -32,17 +32,7 @@ function AppCars() {
             <div key={car.id}>
               <li className='d-inline-block' key={car.id}>
                 <div>
-                  <span>
-                    {car.brand} ({car.model},{car.year}){" "}
-                  </span>
-                  <span>
-                    {car.maxSpeed ? `Maximum speed is ${car.maxSpeed}` : ``}{" "}
-                  </span>
-                  <span>Number of doors:{car.numberOfDoors} </span>
-                  <span>The engine is: {car.engine} </span>
-                  <span>
-                    Car is {car.isAutomatic ? "Automatic" : "not Automatic"}
-                  </span>
+                  <Link to={`/cars/${car.id}`}>{car.brand}</Link>
                 </div>
               </li>
               <button

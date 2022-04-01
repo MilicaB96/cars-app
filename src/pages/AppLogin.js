@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import AuthService from "../services/AuthService";
 
-function Login({ onLogin }) {
+function AppLogin({ onLogin }) {
   // history
   const history = useHistory();
   const [credentials, setCredentials] = useState({
@@ -52,4 +52,4 @@ function Login({ onLogin }) {
   );
 }
 
-export default Login;
+export default AppLogin;
