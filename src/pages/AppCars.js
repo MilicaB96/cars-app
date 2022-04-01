@@ -27,41 +27,42 @@ function AppCars() {
     <div>
       <h1>Cars:</h1>
       <ul>
-        {cars.map((car) => (
-          <div key={car.id}>
-            <li className='d-inline-block' key={car.id}>
-              <div>
-                <span>
-                  {car.brand} ({car.model},{car.year}){" "}
-                </span>
-                <span>
-                  {car.maxSpeed ? `Maximum speed is ${car.maxSpeed}` : ``}{" "}
-                </span>
-                <span>Number of doors:{car.numberOfDoors} </span>
-                <span>The engine is: {car.engine} </span>
-                <span>
-                  Car is {car.isAutomatic ? "Automatic" : "not Automatic"}
-                </span>
-              </div>
-            </li>
-            <button
-              type='button'
-              className='btn'
-              onClick={() => history.push(`/edit/${car.id}`)}
-            >
-              Edit
-            </button>
-            <button
-              type='button'
-              className='btn'
-              onClick={() => {
-                handleDelete(car.id);
-              }}
-            >
-              Delete
-            </button>
-          </div>
-        ))}
+        {Boolean(cars.length) &&
+          cars.map((car) => (
+            <div key={car.id}>
+              <li className='d-inline-block' key={car.id}>
+                <div>
+                  <span>
+                    {car.brand} ({car.model},{car.year}){" "}
+                  </span>
+                  <span>
+                    {car.maxSpeed ? `Maximum speed is ${car.maxSpeed}` : ``}{" "}
+                  </span>
+                  <span>Number of doors:{car.numberOfDoors} </span>
+                  <span>The engine is: {car.engine} </span>
+                  <span>
+                    Car is {car.isAutomatic ? "Automatic" : "not Automatic"}
+                  </span>
+                </div>
+              </li>
+              <button
+                type='button'
+                className='btn'
+                onClick={() => history.push(`/edit/${car.id}`)}
+              >
+                Edit
+              </button>
+              <button
+                type='button'
+                className='btn'
+                onClick={() => {
+                  handleDelete(car.id);
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          ))}
       </ul>
     </div>
   );

@@ -2,7 +2,7 @@ import axios from "axios";
 class CarService {
   constructor() {
     const instance = axios.create({
-      baseURL: "http://localhost:8000",
+      baseURL: "http://localhost:8000/api",
     });
 
     this.client = instance;
@@ -10,8 +10,7 @@ class CarService {
 
   async getAll() {
     try {
-      const { data } = await this.client.get("api/cars");
-      console.log(data);
+      const { data } = await this.client.get("cars");
       return data;
     } catch (error) {
       console.log("Greska", error);
@@ -20,18 +19,16 @@ class CarService {
     return [];
   }
   async create(car) {
-    try {
-      const { data } = await this.client.post("api/cars", car);
-      console.log(data);
-      return data;
-    } catch (error) {
-      console.log("Greska", error);
-    }
-    return [];
+    const { data } = await this.client.post("cars", car);
+    return data;
+    //   const errors = [];
+    //   for (const attr in error.response.data.errors) {
+    //     error.response.data.errors[attr]
+    //   }
   }
   async get(id) {
     try {
-      const { data } = await this.client.get(`api/cars/${id}`);
+      const { data } = await this.client.get(`cars/${id}`);
       return data;
     } catch (error) {
       console.log(error);
@@ -40,7 +37,7 @@ class CarService {
   }
   async edit(id, car) {
     try {
-      const { data } = await this.client.put(`api/cars/${id}`, car);
+      const { data } = await this.client.put(`cars/${id}`, car);
       return data;
     } catch (error) {
       console.log(error);
@@ -48,7 +45,7 @@ class CarService {
   }
   async delete(id) {
     try {
-      const { data } = await this.client.delete(`api/cars/${id}`);
+      const { data } = await this.client.delete(`cars/${id}`);
       return data;
     } catch (error) {
       console.log(error);

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Redirect } from "react-router-dom";
 import { useHistory, useParams } from "react-router-dom";
 import CarService from "../services/CarService";
 function AddCar() {
@@ -33,15 +34,25 @@ function AddCar() {
   async function handleSubmit(e) {
     e.preventDefault();
     if (!id) {
-      await CarService.create({
-        brand,
-        model,
-        year,
-        max_speed,
-        number_of_doors,
-        is_automatic,
-        engine,
-      });
+      try {
+        await CarService.create({
+          brand,
+          model,
+          year,
+          max_speed,
+          number_of_doors,
+          is_automatic,
+          engine,
+        });
+      } catch (error) {
+        const errors = [];
+        Object.values(error.response.data.errors).map((error) =>
+          errors.push(error)
+        );
+        alert(errors.map((error) => `${error} \n`));
+
+        return;
+      }
     } else {
       await CarService.edit(id, {
         brand,
@@ -92,8 +103,6 @@ function AddCar() {
           <input
             type='text'
             name='brand'
-            required
-            minLength='2'
             value={brand}
             placeholder='Brand'
             onChange={(e) => setBrand(e.target.value)}
@@ -104,9 +113,7 @@ function AddCar() {
           <input
             type='text'
             name='model'
-            required
             value={model}
-            minLength='2'
             placeholder='Model'
             onChange={(e) => setModel(e.target.value)}
           />
@@ -117,7 +124,6 @@ function AddCar() {
           <select
             name='year'
             value={year}
-            required
             onChange={(e) => setYear(e.target.value)}
           >
             {years().map((year) => (
@@ -133,7 +139,6 @@ function AddCar() {
           <input
             type='number'
             name='max_speed'
-            min='0'
             value={max_speed}
             placeholder='Maximum speed'
             onChange={(e) => setMaxSpeed(e.target.value)}
@@ -145,9 +150,7 @@ function AddCar() {
           <input
             type='number'
             name='number_of_doors'
-            min='0'
             value={number_of_doors}
-            required
             placeholder='Number of Doors'
             onChange={(e) => setNumberOfDoors(e.target.value)}
           />
@@ -171,7 +174,6 @@ function AddCar() {
               <span key={item}>
                 {item}{" "}
                 <input
-                  required
                   type='radio'
                   onChange={(e) => setEngine(e.target.value)}
                   name='engine'
