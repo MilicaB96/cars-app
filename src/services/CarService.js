@@ -2,7 +2,7 @@ import axios from "axios";
 class CarService {
   constructor() {
     const instance = axios.create({
-      baseURL: "http://localhost:5500",
+      baseURL: "http://localhost:8000",
     });
 
     this.client = instance;
@@ -11,6 +11,7 @@ class CarService {
   async getAll() {
     try {
       const { data } = await this.client.get("api/cars");
+      console.log(data);
       return data;
     } catch (error) {
       console.log("Greska", error);
@@ -21,6 +22,8 @@ class CarService {
   async create(car) {
     try {
       const { data } = await this.client.post("api/cars", car);
+      console.log(data);
+      return data;
     } catch (error) {
       console.log("Greska", error);
     }
@@ -38,6 +41,7 @@ class CarService {
   async edit(id, car) {
     try {
       const { data } = await this.client.put(`api/cars/${id}`, car);
+      return data;
     } catch (error) {
       console.log(error);
     }

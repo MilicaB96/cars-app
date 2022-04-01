@@ -5,7 +5,7 @@ function AppCars() {
   const [cars, setCars] = useState([]);
   async function getCars() {
     const data = await CarService.getAll();
-    setCars(data);
+    setCars(data.data);
   }
   useEffect(() => {
     getCars();
@@ -18,11 +18,10 @@ function AppCars() {
     if (message !== "Y") {
       return;
     }
-    const data = await CarService.delete(id);
+    await CarService.delete(id);
     const index = cars.findIndex((car) => car.id == id);
-    if (data.count > 0) {
-      setCars([...cars.slice(0, index), ...cars.slice(index + 1)]);
-    }
+
+    setCars(cars.filter((car) => car.id !== id));
   }
   return (
     <div>

@@ -2,6 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import CarService from "../services/CarService";
 function AddCar() {
+  // fields
+  const [brand, setBrand] = useState("");
+  const [model, setModel] = useState("");
+  const [year, setYear] = useState(1990);
+  const [max_speed, setMaxSpeed] = useState(0);
+  const [number_of_doors, setNumberOfDoors] = useState(0);
+  const [is_automatic, setIsAutomatic] = useState(false);
+  const [engine, setEngine] = useState(null);
   //get car
   let { id } = useParams();
   async function getCar() {
@@ -12,44 +20,36 @@ function AddCar() {
     setBrand(car.brand);
     setModel(car.model);
     setYear(car.year);
-    setMaxSpeed(car.maxSpeed);
-    setNumberOfDoors(car.numberOfDoors);
-    setIsAutomatic(car.isAutomatic);
+    setMaxSpeed(car.max_speed);
+    setNumberOfDoors(car.number_of_doors);
+    setIsAutomatic(car.is_automatic);
     setEngine(car.engine);
   }
   useEffect(() => {
     getCar();
   }, []);
   const history = useHistory();
-  // fields
-  const [brand, setBrand] = useState("");
-  const [model, setModel] = useState("");
-  const [year, setYear] = useState(1990);
-  const [maxSpeed, setMaxSpeed] = useState(0);
-  const [numberOfDoors, setNumberOfDoors] = useState(0);
-  const [isAutomatic, setIsAutomatic] = useState(false);
-  const [engine, setEngine] = useState(null);
   // handle submit
   async function handleSubmit(e) {
     e.preventDefault();
     if (!id) {
-      const newCar = await CarService.create({
+      await CarService.create({
         brand,
         model,
         year,
-        maxSpeed,
-        numberOfDoors,
-        isAutomatic,
+        max_speed,
+        number_of_doors,
+        is_automatic,
         engine,
       });
     } else {
-      const newCar = await CarService.edit(id, {
+      await CarService.edit(id, {
         brand,
         model,
         year,
-        maxSpeed,
-        numberOfDoors,
-        isAutomatic,
+        max_speed,
+        number_of_doors,
+        is_automatic,
         engine,
       });
     }
@@ -74,14 +74,14 @@ function AddCar() {
   };
   // handle preview
   const handlePreview = () => {
-    const automaticCheck = isAutomatic
+    const automaticCheck = is_automatic
       ? "Car is automatic"
       : "Car is not automatic";
     alert(`brand:${brand}
            model:${model}
            year:${year}
-           Maximum Speed:${maxSpeed}
-           Number of Doors: ${numberOfDoors}
+           Maximum Speed:${max_speed}
+           Number of Doors: ${number_of_doors}
            ${automaticCheck}
            Engine: ${engine}`);
   };
@@ -132,9 +132,9 @@ function AddCar() {
           Maximum Speed: {""}
           <input
             type='number'
-            name='maxSpeed'
+            name='max_speed'
             min='0'
-            value={maxSpeed}
+            value={max_speed}
             placeholder='Maximum speed'
             onChange={(e) => setMaxSpeed(e.target.value)}
           />
@@ -144,9 +144,9 @@ function AddCar() {
           Number of Doors:
           <input
             type='number'
-            name='numberOfDoors'
+            name='number_of_doors'
             min='0'
-            value={numberOfDoors}
+            value={number_of_doors}
             required
             placeholder='Number of Doors'
             onChange={(e) => setNumberOfDoors(e.target.value)}
@@ -157,10 +157,10 @@ function AddCar() {
           Is Automatic? :{" "}
           <input
             type='checkbox'
-            name='isAutomatic'
-            value={isAutomatic}
-            checked={isAutomatic}
-            onChange={() => setIsAutomatic(!isAutomatic)}
+            name='is_automatic'
+            value={is_automatic}
+            checked={is_automatic}
+            onChange={() => setIsAutomatic(!is_automatic)}
           />
         </label>
         <br />
