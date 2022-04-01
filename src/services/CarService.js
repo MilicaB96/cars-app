@@ -1,13 +1,6 @@
 import axios from "axios";
-class CarService {
-  constructor() {
-    const instance = axios.create({
-      baseURL: "http://localhost:8000/api",
-    });
-
-    this.client = instance;
-  }
-
+import HttpService from "./HttpService";
+class CarService extends HttpService {
   async getAll() {
     try {
       const { data } = await this.client.get("cars");
