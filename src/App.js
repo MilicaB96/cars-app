@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Link } from "react-router-dom";
 import "./App.css";
 import AddCar from "./pages/AddCar";
 import AppCars from "./pages/AppCars";
@@ -7,6 +7,8 @@ import { useState } from "react";
 import AuthService from "./services/AuthService";
 import AppRegister from "./pages/AppRegister";
 import SingleCar from "./components/SingleCar";
+import PrivateRoute from "./components/PrivateRoute";
+import PublicRoute from "./components/PublicRoute";
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(
     Boolean(localStorage.getItem("token"))
@@ -52,28 +54,28 @@ function App() {
           </nav>
           <hr />
           <Switch>
-            <Route exact path='/cars/:id'>
+            <PrivateRoute exact path='/cars/:id'>
               <SingleCar />
-            </Route>
-            <Route exact path='/cars'>
+            </PrivateRoute>
+            <PrivateRoute exact path='/cars'>
               <AppCars />
-            </Route>
-            <Route path='/add'>
+            </PrivateRoute>
+            <PrivateRoute path='/add'>
               <AddCar />
-            </Route>
-            <Route exact path='/edit/:id'>
+            </PrivateRoute>
+            <PrivateRoute exact path='/edit/:id'>
               <AddCar />
-            </Route>
-            <Route exact path='/login'>
+            </PrivateRoute>
+            <PublicRoute exact path='/login'>
               <AppLogin
                 onLogin={() => {
                   setIsAuthenticated(true);
                 }}
               />
-            </Route>
-            <Route exact path='/register'>
+            </PublicRoute>
+            <PublicRoute exact path='/register'>
               <AppRegister />
-            </Route>
+            </PublicRoute>
           </Switch>
         </div>
       </Router>
